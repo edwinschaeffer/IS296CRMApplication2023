@@ -9,7 +9,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import crm.dao.HomePageDAO;
 import crm.vo.PotentialLead;
@@ -63,6 +73,24 @@ public class HomePageController {
 		plList.add(pl);
 		model.addAttribute("leads", plList);
 		return "home";
+	}
+	@RequestMapping("/submitLead")
+	public String getLeadPage() {
+		return "submitLead";
+	}
+	@PostMapping("/postLead") 
+	public String postLead(@RequestBody PotentialLead pl){
+		System.out.println(pl.getCompany());
+		hpDAO.savePLToDB(pl);
+		return "redirect:/homeMyBatis";
+	}
+	@PostMapping("/postLead2") 
+	public @ResponseBody String postLeadObjectMapper(@RequestBody String pl) throws JsonMappingException, JsonProcessingException{
+		ObjectMapper om = new ObjectMapper();
+		JsonNode jn = om.readTree(pl);
+		JsonNode companyField = jn.get("company");
+		System.out.println(companyField.asText());
+		return "great job - response from server";
 	}
 	
 }

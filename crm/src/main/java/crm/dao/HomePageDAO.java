@@ -58,4 +58,8 @@ public class HomePageDAO {
 		return pl;
 	}
 	
+	public void savePLToDB(PotentialLead pl) {
+		plRepo.save(pl);
+	}
+	
 }
