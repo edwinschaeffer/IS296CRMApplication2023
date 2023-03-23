@@ -42,6 +42,7 @@ public class HomePageController {
 	@GetMapping("/home")
 	public String getDataRowMapper(Model model) {
 		List<PotentialLead> plList = hpDAO.getListOfAllPLsRowMapper(); 
+		System.out.println(plList.get(0).getId());
 		model.addAttribute("leads", plList);
 		return "home";
 	}

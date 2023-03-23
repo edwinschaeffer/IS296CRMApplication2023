@@ -61,5 +61,8 @@ public class HomePageDAO {
 	public void savePLToDB(PotentialLead pl) {
 		plRepo.save(pl);
 	}
+	public void savePLListToDBJPA(List<PotentialLead> plList) {
+		plRepo.saveAll(plList);
+	}
 	
 }
