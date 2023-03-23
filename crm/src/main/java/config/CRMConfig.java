@@ -17,6 +17,8 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+import crm.controller.HomePageController;
+
 @SpringBootApplication
 @ComponentScan("crm")
 @MapperScan("crm.mapper")
@@ -29,7 +31,7 @@ public class CRMConfig {
 		ds.getConnection().setAutoCommit(true);
 		return ds;
 	}
-	
+
 	@Bean
 	public JdbcTemplate getJdbcTemplate() throws SQLException {
 		return new JdbcTemplate(datasrc());

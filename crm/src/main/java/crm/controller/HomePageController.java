@@ -24,10 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import crm.dao.HomePageDAO;
 import crm.vo.PotentialLead;
 
-@Controller
+@Controller 
 public class HomePageController {
 	@Autowired
 	private JdbcTemplate jdbcT;
+
 	@Autowired
 	private HomePageDAO hpDAO;
 	
@@ -91,6 +92,11 @@ public class HomePageController {
 		JsonNode companyField = jn.get("company");
 		System.out.println(companyField.asText());
 		return "great job - response from server";
+	}
+	@GetMapping("/submitLeadMyBatisPLById")
+	public @ResponseBody String getPLByIDMyBatisSubmitLead(@RequestParam String plID, Model model) throws JsonProcessingException  {
+		ObjectMapper om = new ObjectMapper();
+		return om.writeValueAsString(hpDAO.getPLByIdMyBatis(plID));
 	}
 	
 }
