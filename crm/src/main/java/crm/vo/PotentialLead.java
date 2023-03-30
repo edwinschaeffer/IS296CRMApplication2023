@@ -1,5 +1,8 @@
 package crm.vo;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,6 +16,7 @@ public class PotentialLead {
 	private String id; 
 	@Column(nullable = true, name = "AGE_OF_BUSINESS")
 	private String ageOfBusiness;
+	@Column(nullable = true, name = "CITY")
 	private String city;
 	private String company;
 	private String country;
@@ -27,10 +31,15 @@ public class PotentialLead {
 	private String potentialLeadLocationLongitude;
 	private String sector;
 	private String status;
+	// @JsonProperty("STREET") -- Could use JsonProperty, but this
+	// will deserialize and serialize with the key STREET capitalized
+	// @JsonAlias is a good alternative
+	// @JsonAlias("STREET")
 	private String street;
 	private String website;
 	@Column(nullable = true, name = "ZIP_CODE")
 	private String zipCode;
+	private String state;
 		
 	public String getId() {
 		return id;
@@ -128,4 +137,22 @@ public class PotentialLead {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	@Override
+	public String toString() {
+		return "PotentialLead [id=" + id + ", ageOfBusiness=" + ageOfBusiness + ", city=" + city + ", company="
+				+ company + ", country=" + country + ", area=" + area + ", employeeCount=" + employeeCount
+				+ ", industry=" + industry + ", phone=" + phone + ", potentialLeadLocationLatitude="
+				+ potentialLeadLocationLatitude + ", potentialLeadLocationLongitude=" + potentialLeadLocationLongitude
+				+ ", sector=" + sector + ", status=" + status + ", street=" + street + ", website=" + website
+				+ ", zipCode=" + zipCode + "]";
+	}
+	
+	
 }

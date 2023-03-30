@@ -67,12 +67,27 @@ public class HomePageController {
 		model.addAttribute("leads", plList);
 		return "home";
 	}
+	// Technically you do not need value="plId" if the variable name
+	// matches the expression. So if the variable name = plId you can
+	// omit the value="plId"
+	@GetMapping("/homeMyBatisPLById/{plId}")
+	public String getPLByIDMyBatisByVarb(@PathVariable(value="plId") String plIDre, Model model) {
+		List<PotentialLead> plList = hpDAO.getPLByIdMyBatis(plIDre);
+		model.addAttribute("leads", plList);
+		return "home";
+	}
 	
 	@GetMapping("/homeJPAById")
 	public String getPLByIDJPA(@RequestParam String plID, Model model) {
 		PotentialLead pl = hpDAO.getPLByIdJPA(plID);
 		List<PotentialLead> plList = new ArrayList<PotentialLead>();
 		plList.add(pl);
+		model.addAttribute("leads", plList);
+		return "home";
+	}
+	@GetMapping("/homeJPAFindByCity/{city}")
+	public String getPLFindByCityJPA(@PathVariable String city, Model model) {
+		List<PotentialLead> plList = hpDAO.getPLByCityJPA(city);
 		model.addAttribute("leads", plList);
 		return "home";
 	}
@@ -98,6 +113,18 @@ public class HomePageController {
 	public @ResponseBody String getPLByIDMyBatisSubmitLead(@RequestParam String plID, Model model) throws JsonProcessingException  {
 		ObjectMapper om = new ObjectMapper();
 		return om.writeValueAsString(hpDAO.getPLByIdMyBatis(plID));
+	}
+	
+	@GetMapping("/getMaxEmployees")
+	public String getMaxEmployees(Model model) {
+		model.addAttribute("leads", hpDAO.getMaxEmployees());
+		return "home";
+	}
+	@GetMapping("/getMap")
+	public String getGoogleMap(Model model) {
+		List<PotentialLead> plList = hpDAO.getListOfAllPLsMyBatis();
+		model.addAttribute("leads", plList);
+		return "map";
 	}
 	
 }

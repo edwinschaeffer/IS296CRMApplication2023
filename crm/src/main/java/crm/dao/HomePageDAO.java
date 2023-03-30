@@ -16,14 +16,20 @@ import crm.vo.PotentialLead;
 @Service
 public class HomePageDAO {
 
-	@Autowired
 	private JdbcTemplate jdbcT;
 	
-	@Autowired
 	private PotentialLeadMapper plm;
 	
 	@Autowired
 	private PotentialLeadRepository plRepo;
+	
+	/* Constructor injection. 
+ 	   Since there is a JdbcTemplate type returned in the Config class
+	   the JdbcTemplate exists in the factory and Spring will auto-inject the
+	   JdbcTemplate without an @Autowired annotation */
+	public HomePageDAO(JdbcTemplate jdbcT) {
+		this.jdbcT = jdbcT;
+	}
 	
 	public List<PotentialLead> getListOfAllPLsRowMapper() {
 		return jdbcT.query("SELECT * FROM POTENTIAL_LEADS", new RowMapper<PotentialLead>() {
@@ -57,12 +63,27 @@ public class HomePageDAO {
 		PotentialLead pl = plRepo.findByid(plId);
 		return pl;
 	}
+	public List<PotentialLead> getPLByCityJPA(String plCity) {
+		List<PotentialLead> pl = plRepo.findByCity(plCity);
+		return pl;
+	}
 	
 	public void savePLToDB(PotentialLead pl) {
 		plRepo.save(pl);
 	}
 	public void savePLListToDBJPA(List<PotentialLead> plList) {
 		plRepo.saveAll(plList);
+	}
+	
+	public List<PotentialLead> getMaxEmployees() {
+		return plRepo.getMaxEmployees();
+	}
+	// Setter injection
+	// Here we use Setter Injection in the Annotation-Configured Class
+	@Autowired
+	public void setPLM(PotentialLeadMapper plm) {
+		// In theory we could do additional things prior to setting the variable
+		this.plm = plm;
 	}
 	
 }
