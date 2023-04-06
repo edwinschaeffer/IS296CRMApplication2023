@@ -1,10 +1,13 @@
 package crm.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -77,6 +80,64 @@ public class HomePageDAO {
 	
 	public List<PotentialLead> getMaxEmployees() {
 		return plRepo.getMaxEmployees();
+	}
+	public List<PotentialLead> transformAreaJPA() {
+		List<PotentialLead> plList = plm.getListOfAllPLs();
+		for(PotentialLead pl : plList) {
+			switch(pl.getArea()) {
+				case "MID-AMERICA":
+					pl.setArea("MA");
+				break;
+				case "CENTRAL ILLINOIS": 
+					pl.setArea("CI");
+				break;
+			}
+		}
+		plRepo.saveAll(plList);
+		return plm.getListOfAllPLs();
+	}
+	public List<PotentialLead> transformAreaJDBCTemplate() {
+		List<PotentialLead> plList = plm.getListOfAllPLs();
+		
+		int[] returnInt = this.jdbcT.batchUpdate(
+		"UPDATE POTENTIAL_LEADS set AREA = ? WHERE ID = ?", 
+		new BatchPreparedStatementSetter() {
+			
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				String newArea = plList.get(i).getArea();
+				switch(plList.get(i).getArea()) {
+					case "MID-AMERICA":
+						newArea = "MA";
+					break;
+					case "CENTRAL ILLINOIS": 
+						newArea = "CI";
+					break;		
+				}
+				
+				ps.setString(1, newArea);
+				ps.setString(2, plList.get(i).getId());
+			}
+
+			@Override
+			public int getBatchSize() {
+				// TODO Auto-generated method stub
+				return plList.size();
+			}
+
+		});
+		System.out.println("Batch Sizes");
+		for (int i = 0; i < returnInt.length; i++) {
+			System.out.println(returnInt[i]);
+		}
+		
+		return plm.getListOfAllPLs();
+	}
+	// Out of all business in our data set, show the max employees at a single business, and
+	// the number of businesses.
+	public List<Map<String, Object>> maxEmpByArea() {
+		return jdbcT.queryForList(
+				"SELECT AREA, COUNT(ID), MAX(EMPLOYEE_COUNT) FROM POTENTIAL_LEADS GROUP BY AREA");
+		
 	}
 	// Setter injection
 	// Here we use Setter Injection in the Annotation-Configured Class

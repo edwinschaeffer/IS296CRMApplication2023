@@ -42,11 +42,21 @@
 					});
 				}
 			});
-			
-			
-
 		}
-	
+		$(document).ready(function() {
+			 var plList = [[${leads}]];
+			 var plObj;
+			 if(plList.length > 0) {
+				 plObj = plList[0];
+			 }
+			 
+			 for (const key of Object.keys(plObj)) {
+				 $('#' + key).val(plObj[key]);
+				 if(key == 'website') {
+					 $('#' + key + 'URL').html(plObj[key]);
+				 }
+			 }
+		});
 	</script>
 </head>
 <body>

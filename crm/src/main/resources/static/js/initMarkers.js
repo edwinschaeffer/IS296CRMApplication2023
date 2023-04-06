@@ -35,7 +35,7 @@ function initContent(potentialLead) {
 		'</table>'
 		+ '<table>' +
 		'<tr>' +
-		'<td>' + '<button style="margin-top: 10px; margin-left: 65px;" id=' + potentialLead.id + ' onclick="reLocate(\'editStandard/\' + this.id)">Edit Record Standard</button>' + '</td>' +
+		'<td>' + '<button style="margin-top: 10px; margin-left: 65px;" id=' + potentialLead.id + ' onclick="reLocate(\'editStandardById/\' + this.id)">Edit Record Standard</button>' + '</td>' +
 		'<td>' + '<button style="margin-top: 10px; margin-left: 20px;" id=' + potentialLead.id + ' onclick="reLocate(\'editThymeLeaf/\' + this.id)">Edit Record ThymeLeaf</button>' + '</td>' +
 		'</tr>' +
 		'</table>' + 

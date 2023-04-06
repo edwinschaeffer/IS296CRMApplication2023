@@ -38,6 +38,21 @@ public class HomePageController {
 		model.addAttribute("leads", leads);
 		return "home";
 	}
+	// Transforms the Area column in the database and returns to screen
+	@GetMapping("/changeArea")
+	public String getChangedArea(Model model) {
+		model.addAttribute("leads", hpDAO.transformAreaJPA());
+		return "home";
+	}
+	@GetMapping("/changeAreaJDBCTemplate")
+	public String getChangedAreaJDBCTemplate(Model model) {
+		model.addAttribute("leads", hpDAO.transformAreaJDBCTemplate());
+		return "home";
+	}
+	@GetMapping("/maxEmpByArea")
+	public @ResponseBody List<Map<String, Object>> getmaxEmpByArea() {
+		return hpDAO.maxEmpByArea();
+	}
 	
 	@GetMapping("/home")
 	public String getDataRowMapper(Model model) {
@@ -93,6 +108,12 @@ public class HomePageController {
 	}
 	@RequestMapping("/submitLead")
 	public String getLeadPage() {
+		return "submitLead";
+	}
+	@GetMapping("/editStandardById/{plId}")
+	public String getPLByIDMyBatisGoogleMap(@PathVariable(value="plId") String plIDre, Model model) {
+		List<PotentialLead> plList = hpDAO.getPLByIdMyBatis(plIDre);
+		model.addAttribute("leads", plList);
 		return "submitLead";
 	}
 	@PostMapping("/postLead") 
