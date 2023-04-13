@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class LoggerConfig {
    // static Logger logger = Logger.
 	
-	@Before("execution(String getetChangedArea(..))")
+	@Before("execution(String getChanged*(..))")
 	public void logEveryGet(JoinPoint jp) {
 		System.out.println("Before advice implementation - " 
 	        + jp.getTarget().getClass() + " - Executing Before " 

@@ -24,7 +24,7 @@ import crm.controller.HomePageController;
 @ComponentScan("crm")
 @MapperScan("crm.mapper")
 @EnableJpaRepositories("crm.repository")
-@Import(AspectConfig.class)
+@Import({ AspectConfig.class, WebSecurityConfig.class })
 public class CRMConfig {
 	
 	@Bean
