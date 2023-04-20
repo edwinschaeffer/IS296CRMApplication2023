@@ -55,7 +55,7 @@ public class HomePageController {
 		return hpDAO.maxEmpByArea();
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/home")
 	public String getDataRowMapper(Model model) {
 		List<PotentialLead> plList = hpDAO.getListOfAllPLsRowMapper(); 
